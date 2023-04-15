@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="WarehouseDBModel1.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DriverInfo">
+          <Key>
+            <PropertyRef Name="DriverID" />
+          </Key>
+          <Property Name="DriverID" Type="int" Nullable="false" />
+          <Property Name="DriverName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="ProductName" Type="varchar" MaxLength="50" />
+          <Property Name="ProductDescription" Type="varchar" MaxLength="200" />
+          <Property Name="ProductCount" Type="int" Nullable="false" />
+        </EntityType>
+        <Function Name="GetProductById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ProductId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ProductCreateOrUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ProductId" Type="int" Mode="In" />
+          <Parameter Name="ProductName" Type="varchar" Mode="In" />
+          <Parameter Name="ProductDescription" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="ProductViewAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="WarehouseDBModel1StoreContainer">
+          <EntitySet Name="DriverInfo" EntityType="Self.DriverInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Login" EntityType="Self.Login" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="WarehouseDBModel1" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="WarehouseDBEntities1" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="GetProductById" ReturnType="Collection(WarehouseDBModel1.GetProductById_Result)">
+          <Parameter Name="ProductId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ProductCreateOrUpdate">
+            <Parameter Name="ProductId" Mode="In" Type="Int32" />
+            <Parameter Name="ProductName" Mode="In" Type="String" />
+            <Parameter Name="ProductDescription" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="ProductViewAll" ReturnType="Collection(WarehouseDBModel1.ProductViewAll_Result)" />
+          <EntitySet Name="DriverInfo" EntityType="WarehouseDBModel1.DriverInfo" />
+          <EntitySet Name="Login" EntityType="WarehouseDBModel1.Login" />
+          <EntitySet Name="Products" EntityType="WarehouseDBModel1.Products" />
+        </EntityContainer>
+        <ComplexType Name="GetProductById_Result">
+          <Property Type="Int32" Name="ProductId" Nullable="false" />
+          <Property Type="String" Name="ProductName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ProductDescription" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="ProductCount" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="ProductViewAll_Result">
+          <Property Type="Int32" Name="ProductId" Nullable="false" />
+          <Property Type="String" Name="ProductName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ProductDescription" Nullable="true" MaxLength="200" />
+        </ComplexType>
+        <EntityType Name="DriverInfo">
+          <Key>
+            <PropertyRef Name="DriverID" />
+          </Key>
+          <Property Name="DriverID" Type="Int32" Nullable="false" />
+          <Property Name="DriverName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="ProductName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ProductDescription" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ProductCount" Type="Int32" Nullable="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="WarehouseDBModel1StoreContainer" CdmEntityContainer="WarehouseDBEntities1">
+          <FunctionImportMapping FunctionImportName="GetProductById" FunctionName="WarehouseDBModel1.Store.GetProductById">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WarehouseDBModel1.GetProductById_Result">
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
+                <ScalarProperty Name="ProductCount" ColumnName="ProductCount" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ProductCreateOrUpdate" FunctionName="WarehouseDBModel1.Store.ProductCreateOrUpdate" />
+          <FunctionImportMapping FunctionImportName="ProductViewAll" FunctionName="WarehouseDBModel1.Store.ProductViewAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WarehouseDBModel1.ProductViewAll_Result">
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="DriverInfo">
+            <EntityTypeMapping TypeName="WarehouseDBModel1.DriverInfo">
+              <MappingFragment StoreEntitySet="DriverInfo">
+                <ScalarProperty Name="DriverName" ColumnName="DriverName" />
+                <ScalarProperty Name="DriverID" ColumnName="DriverID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Login">
+            <EntityTypeMapping TypeName="WarehouseDBModel1.Login">
+              <MappingFragment StoreEntitySet="Login">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="WarehouseDBModel1.Products">
+              <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="ProductCount" ColumnName="ProductCount" />
+                <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
