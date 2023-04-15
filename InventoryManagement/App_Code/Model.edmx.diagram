@@ -5,9 +5,11 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="39020ffa4154441f979cd448c438f79c" Name="Diagram1">
-        <EntityTypeShape EntityType="WarehouseDBModel1.DriverInfo" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="WarehouseDBModel1.Login" Width="1.5" PointX="2.75" PointY="0.75" />
-        <EntityTypeShape EntityType="WarehouseDBModel1.Products" Width="1.5" PointX="0.75" PointY="3.75" />
+        <EntityTypeShape EntityType="WarehouseDBModel1.Customer" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="WarehouseDBModel1.Login" Width="1.5" PointX="0.75" PointY="3.75" />
+        <EntityTypeShape EntityType="WarehouseDBModel1.Products" Width="1.5" PointX="2.75" PointY="3.75" />
+        <EntityTypeShape EntityType="WarehouseDBModel1.Carrier" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="WarehouseDBModel1.Orders" Width="1.5" PointX="5.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

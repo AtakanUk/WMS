@@ -25,9 +25,11 @@ public partial class WarehouseDBEntities1 : DbContext
         throw new UnintentionalCodeFirstException();
     }
 
-    public virtual DbSet<DriverInfo> DriverInfo { get; set; }
+    public virtual DbSet<Customer> Customer { get; set; }
     public virtual DbSet<Login> Login { get; set; }
     public virtual DbSet<Products> Products { get; set; }
+    public virtual DbSet<Carrier> Carrier { get; set; }
+    public virtual DbSet<Orders> Orders { get; set; }
 
     public virtual ObjectResult<GetProductById_Result> GetProductById(Nullable<int> productId)
     {

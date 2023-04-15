@@ -10,10 +10,23 @@
 using System;
 using System.Collections.Generic;
 
-public partial class DriverInfo
+public partial class Carrier
 {
-    public int DriverID { get; set; }
-    public string DriverName { get; set; }
+    public int CarrierId { get; set; }
+    public string CarrierName { get; set; }
+    public string Address { get; set; }
+    public string ContactPerson { get; set; }
+    public string Email { get; set; }
+    public string Phone { get; set; }
+}
+
+public partial class Customer
+{
+    public int CustomerId { get; set; }
+    public string CustomerName { get; set; }
+    public string Address { get; set; }
+    public string Email { get; set; }
+    public string Phone { get; set; }
 }
 
 public partial class Login
@@ -23,12 +36,25 @@ public partial class Login
     public string Password { get; set; }
 }
 
+public partial class Orders
+{
+    public int Id { get; set; }
+    public int OrderId { get; set; }
+    public Nullable<int> CustomerId { get; set; }
+    public Nullable<int> OrderProductId { get; set; }
+    public Nullable<int> OrderProductAmount { get; set; }
+    public Nullable<bool> OrderStatus { get; set; }
+}
+
 public partial class Products
 {
     public int ProductId { get; set; }
     public string ProductName { get; set; }
     public string ProductDescription { get; set; }
     public int ProductCount { get; set; }
+    public string ProductWeight { get; set; }
+    public string ProductSize { get; set; }
+    public string ProductOrigin { get; set; }
 }
 
 public partial class GetProductById_Result

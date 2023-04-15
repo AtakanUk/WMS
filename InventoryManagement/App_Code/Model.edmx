@@ -5,12 +5,26 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="WarehouseDBModel1.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="DriverInfo">
+        <EntityType Name="Carrier">
           <Key>
-            <PropertyRef Name="DriverID" />
+            <PropertyRef Name="CarrierId" />
           </Key>
-          <Property Name="DriverID" Type="int" Nullable="false" />
-          <Property Name="DriverName" Type="nvarchar" MaxLength="50" />
+          <Property Name="CarrierId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CarrierName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="100" />
+          <Property Name="ContactPerson" Type="varchar" MaxLength="100" />
+          <Property Name="Email" Type="varchar" MaxLength="100" />
+          <Property Name="Phone" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustomerId" />
+          </Key>
+          <Property Name="CustomerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="200" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Phone" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="Login">
           <Key>
@@ -20,6 +34,17 @@
           <Property Name="UserName" Type="nvarchar" MaxLength="50" />
           <Property Name="Password" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderId" Type="int" Nullable="false" />
+          <Property Name="CustomerId" Type="int" />
+          <Property Name="OrderProductId" Type="int" />
+          <Property Name="OrderProductAmount" Type="int" />
+          <Property Name="OrderStatus" Type="bit" />
+        </EntityType>
         <EntityType Name="Products">
           <Key>
             <PropertyRef Name="ProductId" />
@@ -28,6 +53,9 @@
           <Property Name="ProductName" Type="varchar" MaxLength="50" />
           <Property Name="ProductDescription" Type="varchar" MaxLength="200" />
           <Property Name="ProductCount" Type="int" Nullable="false" />
+          <Property Name="ProductWeight" Type="varchar" MaxLength="50" />
+          <Property Name="ProductSize" Type="varchar" MaxLength="50" />
+          <Property Name="ProductOrigin" Type="varchar" MaxLength="50" />
         </EntityType>
         <Function Name="GetProductById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ProductId" Type="int" Mode="In" />
@@ -39,8 +67,10 @@
         </Function>
         <Function Name="ProductViewAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="WarehouseDBModel1StoreContainer">
-          <EntitySet Name="DriverInfo" EntityType="Self.DriverInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Carrier" EntityType="Self.Carrier" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Login" EntityType="Self.Login" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -57,9 +87,11 @@
             <Parameter Name="ProductDescription" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="ProductViewAll" ReturnType="Collection(WarehouseDBModel1.ProductViewAll_Result)" />
-          <EntitySet Name="DriverInfo" EntityType="WarehouseDBModel1.DriverInfo" />
+          <EntitySet Name="Customer" EntityType="WarehouseDBModel1.Customer" />
           <EntitySet Name="Login" EntityType="WarehouseDBModel1.Login" />
           <EntitySet Name="Products" EntityType="WarehouseDBModel1.Products" />
+          <EntitySet Name="Carrier" EntityType="WarehouseDBModel1.Carrier" />
+          <EntitySet Name="Orders" EntityType="WarehouseDBModel1.Orders" />
         </EntityContainer>
         <ComplexType Name="GetProductById_Result">
           <Property Type="Int32" Name="ProductId" Nullable="false" />
@@ -72,12 +104,15 @@
           <Property Type="String" Name="ProductName" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="ProductDescription" Nullable="true" MaxLength="200" />
         </ComplexType>
-        <EntityType Name="DriverInfo">
+        <EntityType Name="Customer">
           <Key>
-            <PropertyRef Name="DriverID" />
+            <PropertyRef Name="CustomerId" />
           </Key>
-          <Property Name="DriverID" Type="Int32" Nullable="false" />
-          <Property Name="DriverName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Login">
           <Key>
@@ -95,6 +130,31 @@
           <Property Name="ProductName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="ProductDescription" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="ProductCount" Type="Int32" Nullable="false" />
+          <Property Name="ProductWeight" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ProductSize" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ProductOrigin" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Carrier">
+          <Key>
+            <PropertyRef Name="CarrierId" />
+          </Key>
+          <Property Name="CarrierId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CarrierName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ContactPerson" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderId" Type="Int32" Nullable="false" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="OrderProductId" Type="Int32" />
+          <Property Name="OrderProductAmount" Type="Int32" />
+          <Property Name="OrderStatus" Type="Boolean" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -122,11 +182,14 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <EntitySetMapping Name="DriverInfo">
-            <EntityTypeMapping TypeName="WarehouseDBModel1.DriverInfo">
-              <MappingFragment StoreEntitySet="DriverInfo">
-                <ScalarProperty Name="DriverName" ColumnName="DriverName" />
-                <ScalarProperty Name="DriverID" ColumnName="DriverID" />
+          <EntitySetMapping Name="Customer">
+            <EntityTypeMapping TypeName="WarehouseDBModel1.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -142,10 +205,37 @@
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="WarehouseDBModel1.Products">
               <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="ProductOrigin" ColumnName="ProductOrigin" />
+                <ScalarProperty Name="ProductSize" ColumnName="ProductSize" />
+                <ScalarProperty Name="ProductWeight" ColumnName="ProductWeight" />
                 <ScalarProperty Name="ProductCount" ColumnName="ProductCount" />
                 <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
                 <ScalarProperty Name="ProductName" ColumnName="ProductName" />
                 <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Carrier">
+            <EntityTypeMapping TypeName="WarehouseDBModel1.Carrier">
+              <MappingFragment StoreEntitySet="Carrier">
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="ContactPerson" ColumnName="ContactPerson" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="CarrierName" ColumnName="CarrierName" />
+                <ScalarProperty Name="CarrierId" ColumnName="CarrierId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="WarehouseDBModel1.Orders">
+              <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
+                <ScalarProperty Name="OrderProductAmount" ColumnName="OrderProductAmount" />
+                <ScalarProperty Name="OrderProductId" ColumnName="OrderProductId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
