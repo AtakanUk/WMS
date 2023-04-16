@@ -44,6 +44,8 @@
           <Property Name="OrderProductId" Type="int" />
           <Property Name="OrderProductAmount" Type="int" />
           <Property Name="OrderStatus" Type="bit" />
+          <Property Name="CarrierId" Type="int" />
+          <Property Name="CarrierName" Type="varchar" MaxLength="1" />
         </EntityType>
         <EntityType Name="Products">
           <Key>
@@ -155,6 +157,8 @@
           <Property Name="OrderProductId" Type="Int32" />
           <Property Name="OrderProductAmount" Type="Int32" />
           <Property Name="OrderStatus" Type="Boolean" />
+          <Property Name="CarrierId" Type="Int32" />
+          <Property Name="CarrierName" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -230,6 +234,8 @@
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="WarehouseDBModel1.Orders">
               <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="CarrierName" ColumnName="CarrierName" />
+                <ScalarProperty Name="CarrierId" ColumnName="CarrierId" />
                 <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
                 <ScalarProperty Name="OrderProductAmount" ColumnName="OrderProductAmount" />
                 <ScalarProperty Name="OrderProductId" ColumnName="OrderProductId" />

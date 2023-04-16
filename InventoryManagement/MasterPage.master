@@ -79,7 +79,7 @@
             <table class="auto-style1">
                 <tr>
                     <td class="auto-style28">&nbsp;</td>
-                    <td class="auto-style5">Inventory Management System</td>
+                    <td class="auto-style5">Warehouse Management System</td>
                     <td class="auto-style36" style="color: #797979; font-weight: bold;"><a class="auto-style34" href="Home.aspx">Home</a></td>
                     <td class="auto-style39" style="color: #797979; font-weight: bold;"><a class="auto-style41" href="Item.aspx"><span class="auto-style42">Item</span></a></td>
                     <td class="auto-style39" style="color: #797979; font-weight: bold;"><a class="auto-style41" href="Stock.aspx"><span class="auto-style42">Stock</span></a></td>

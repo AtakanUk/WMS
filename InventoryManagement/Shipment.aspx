@@ -60,7 +60,7 @@
     <div class="auto-style41">
         <h3 class="auto-style52">Orders That Are Ready To Ship</h3>
         <div class="auto-style51">
-            <asp:GridView ID="orderGrid" runat="server" AutoGenerateColumns="False" OnRowCommand="orderGrid_RowCommand" DataKeyNames="OrderId">
+            <asp:GridView ID="orderGrid" runat="server" AutoGenerateColumns="False" OnRowDataBound="orderGrid_RowDataBound" OnRowCommand="orderGrid_RowCommand" DataKeyNames="OrderId">
                 <Columns>
                     <asp:BoundField DataField="OrderId" HeaderText="Order ID" />
                     <asp:TemplateField HeaderText="Order Status">
@@ -68,7 +68,12 @@
                             <%# Eval("OrderStatus").ToString().Equals("False") ? "Not Completed" : "Completed" %>
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:ButtonField ButtonType="Button" Text="Ship" CommandName="GetOrderID" />
+                    <asp:TemplateField HeaderText="Items">
+                        <ItemTemplate>
+                            <asp:DropDownList ID="ddlItems" runat="server" DataTextField="CarrierName" DataValueField="CarrierName" />
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:ButtonField ButtonType="Button" Text="Ship" CommandName="GetOrderID"/>
                 </Columns>
             </asp:GridView>
             <br />

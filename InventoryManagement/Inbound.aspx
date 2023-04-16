@@ -56,7 +56,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <div class="auto-style41">
-        <h3 class="auto-style52">Item Registration</h3>
+        <h3 class="auto-style52">Inbound</h3>
         <asp:HiddenField ID="hfProductId" runat="server" />
         <table class="auto-style42">
             <tr>

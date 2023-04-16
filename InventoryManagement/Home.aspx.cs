@@ -9,9 +9,12 @@ public partial class Home : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Session["user"] == null)
+        if (!IsPostBack)
         {
-            Response.Redirect("Login.aspx");
+            if (!User.Identity.IsAuthenticated)
+            {
+                Response.Redirect("~/Login.aspx");
+            }
         }
     }
 }

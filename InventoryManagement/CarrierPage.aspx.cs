@@ -11,6 +11,13 @@ public partial class CarrierPage : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (!IsPostBack)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                Response.Redirect("~/Login.aspx");
+            }
+        }
         FillGridView();
     }
 

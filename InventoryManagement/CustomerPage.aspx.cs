@@ -11,6 +11,13 @@ public partial class CustomerPage : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (!IsPostBack)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                Response.Redirect("~/Login.aspx");
+            }
+        }
         FillGridView();
     }
 
@@ -36,7 +43,7 @@ public partial class CustomerPage : System.Web.UI.Page
         {
             if (string.IsNullOrEmpty(txtcustomername.Text))
             {
-                lblerrormessage.Text = "Lütfen müşteri ismi giriniz.";
+                lblerrormessage.Text = "Please enter a valid Customer Name.";
                 FillGridView();
                 return;
             }

@@ -11,46 +11,6 @@
             }
             return true;
         }
-        function addProduct() {
-            // Get the product details from the form
-            var productId = document.getElementById("productId").value;
-            var productName = document.getElementById("productName").value;
-            var productPrice = document.getElementById("productPrice").value;
-
-            // Create a new row for the product
-            var newRow = "<tr><td>" + productId + "</td><td>" + productName + "</td><td>" + productPrice + "</td></tr>";
-
-            // Append the new row to the table
-            var tableBody = document.getElementById("productTable").getElementsByTagName("tbody")[0];
-            tableBody.innerHTML += newRow;
-
-            // Clear the form
-            document.getElementById("productId").value = "";
-            document.getElementById("productName").value = "";
-            document.getElementById("productPrice").value = "";
-        }
-        function saveProducts() {
-            // Get all the product rows from the table
-            var rows = document.getElementById("productTable").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-
-            // Create an array to hold the product data
-            var products = [];
-
-            // Loop through the rows and add each product to the array
-            for (var i = 0; i < rows.length; i++) {
-                var cells = rows[i].getElementsByTagName("td");
-                var productId = cells[0].innerHTML;
-                var productName = cells[1].innerHTML;
-                var productPrice = cells[2].innerHTML;
-                var product = { productId: productId, productName: productName, productPrice: productPrice };
-                products.push(product);
-            }
-
-            // Send the product data to the server to save to the database
-            // ...
-        }
-        document.getElementById("addProductButton").addEventListener("click", addProduct);
-        document.getElementById("saveButton").addEventListener("click", saveProducts);
     </script>
 
 
@@ -113,10 +73,10 @@
             </tr>
             <tr>
                 <td class="auto-style46">
-                    <asp:Button ID="btnsave" runat="server" Text="Add To Basket" Font-Bold="True" OnClick="AddToBasketButton_Click" Width="100px" />
+                    <asp:Button ID="btnsave" runat="server" Text="Add To Order List" Font-Bold="True" OnClick="AddToShipmentButton_Click" Width="200px" />
                 </td>
                 <td class="auto-style49">
-                    <asp:Button ID="btncheckout" runat="server" Text="Delete" OnClick="CheckoutButton_Click" Width="56px" Font-Bold="True" />
+                    <asp:Button ID="btncheckout" runat="server" Text="Send List" OnClick="SendList_Click" Width="200px" Font-Bold="True" />
                 </td>
                 <td class="auto-style50">
                     <asp:Button ID="btnclear" runat="server" Text="Clear" Font-Bold="True" OnClick="btnclear_Click" />
@@ -132,7 +92,7 @@
         </table>
         <h4>
             <br />
-            <span class="auto-style52">Outbound List</span><br />
+            <span class="auto-style52">Outbound Order</span><br />
             <br />
         </h4>
         <div class="auto-style51">

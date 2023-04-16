@@ -15,6 +15,13 @@ public partial class Outbound : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (!IsPostBack)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                Response.Redirect("~/Login.aspx");
+            }
+        }
 
         Dictionary<int, int> basket = Session["Basket"] as Dictionary<int, int>;
         if (basket == null)
@@ -29,7 +36,6 @@ public partial class Outbound : System.Web.UI.Page
             basketTable.Rows.Add(item.Key, item.Value);
         }
 
-        // Bind the DataTable to the GridView
         basketGrid.DataSource = basketTable;
         basketGrid.DataBind();
     }
@@ -51,7 +57,6 @@ public partial class Outbound : System.Web.UI.Page
             basketTable.Rows.Add(item.Key, item.Value);
         }
 
-        // Bind the DataTable to the GridView
         basketGrid.DataSource = basketTable;
         basketGrid.DataBind();
 
@@ -66,7 +71,7 @@ public partial class Outbound : System.Web.UI.Page
 
             if (product == null)
             {
-                // Create new product
+
                 var item = new Products
                 {
                     ProductId = productId,
@@ -76,7 +81,7 @@ public partial class Outbound : System.Web.UI.Page
             }
             else
             {
-                // Update existing product
+
                 dbContext.Products.AddOrUpdate(product);
             }
 
@@ -85,11 +90,10 @@ public partial class Outbound : System.Web.UI.Page
         }
     }
 
-    protected void CheckoutButton_Click(object sender, EventArgs e)
+    protected void SendList_Click(object sender, EventArgs e)
     {
         using (var dbContext = new WarehouseDBEntities1())
         {
-            // TODO: Save the order to the database
             Dictionary<int, int> basket = Session["Basket"] as Dictionary<int, int>;
             if (basket == null)
             {
@@ -110,7 +114,7 @@ public partial class Outbound : System.Web.UI.Page
             }
             foreach (DataRow row in basketTable.Rows)
             {
-                // access data in each row using the column name or index
+
                 string productId = row["ProductId"].ToString();
                 string productCount = row["ProductCount"].ToString();
                 var productIdAsInt = int.Parse(productId);
@@ -126,16 +130,10 @@ public partial class Outbound : System.Web.UI.Page
 
                 dbContext.Orders.Add(newOrder);
                 dbContext.SaveChanges();
-                //if (product.ProductCount >= productCountAsInt)
-                //{
-                //    product.ProductCount = product.ProductCount - productCountAsInt;
-                //    dbContext.Products.AddOrUpdate(product);
-                //    dbContext.SaveChanges();
-                //}
+
             }
 
-            // Clear the basket from the session
-            //Session.Remove("Basket");
+
         }
     }
 
@@ -149,63 +147,40 @@ public partial class Outbound : System.Web.UI.Page
         }
     }
 
-    protected void AddToBasketButton_Click(object sender, EventArgs e)
+    protected void AddToShipmentButton_Click(object sender, EventArgs e)
     {
-        // Get the product ID and count from the text boxes
-        int productId = int.Parse(txtproid.Text);
-        int productCount = int.Parse(txtitemcount.Text);
-
-        // Get the current basket from the session, or create a new one if it doesn't exist
-        Dictionary<int, int> basket = Session["Basket"] as Dictionary<int, int>;
-        if (basket == null)
+        bool productIdcheck = int.TryParse(txtproid.Text,out int productId);
+        bool productCountCheck = int.TryParse(txtitemcount.Text,out int productCount);
+        if(productCountCheck && productIdcheck)
         {
-            basket = new Dictionary<int, int>();
+            Dictionary<int, int> basket = Session["Basket"] as Dictionary<int, int>;
+            if (basket == null)
+            {
+                basket = new Dictionary<int, int>();
+            }
+
+
+            if (basket.ContainsKey(productId))
+            {
+                basket[productId] = productCount;
+            }
+            else
+            {
+                basket.Add(productId, productCount);
+            }
+
+            Session["Basket"] = basket;
+
+            DataTable basketTable = new DataTable();
+            basketTable.Columns.Add("ProductId", typeof(string));
+            basketTable.Columns.Add("ProductCount", typeof(int));
+            foreach (var item in basket)
+            {
+                basketTable.Rows.Add(item.Key, item.Value);
+            }
+            basketGrid.DataSource = basketTable;
+            basketGrid.DataBind();
         }
-
-        // Add the product to the basket
-        if (basket.ContainsKey(productId))
-        {
-            basket[productId] = productCount;
-        }
-        else
-        {
-            basket.Add(productId, productCount);
-        }
-
-        // Save the basket back to the session
-        Session["Basket"] = basket;
-
-        // Refresh the grid view to show the updated basket
-        // Convert the dictionary to a list of key-value pairs
-
-        // Convert the dictionary to a DataTable
-        DataTable basketTable = new DataTable();
-        basketTable.Columns.Add("ProductId", typeof(string));
-        basketTable.Columns.Add("ProductCount", typeof(int));
-        foreach (var item in basket)
-        {
-            basketTable.Rows.Add(item.Key, item.Value);
-        }
-
-        // Bind the DataTable to the GridView
-        basketGrid.DataSource = basketTable;
-        basketGrid.DataBind();
-
-    }
-
-    protected void SaveBasketButton_Click(object sender, EventArgs e)
-    {
-        // TODO: Save the order to the database
-
-        // Clear the basket from the session
-        Session.Remove("Basket");
-
-        // Redirect to the order confirmation page
-    }
-
-    protected void ClearBasketButton_Click(object sender, EventArgs e)
-    {
-
     }
 
     protected void lnk_onClick(object sender, EventArgs e)
@@ -256,11 +231,9 @@ public partial class Outbound : System.Web.UI.Page
 
     private string GetSortDirection(string column)
     {
-        // By default, sort the data in ascending order
+
         string direction = "ASC";
 
-        // If the data is already sorted by the selected column in ascending order,
-        // change the sort direction to descending order
         if (ViewState["SortExpression"] != null && ViewState["SortExpression"].ToString() == column)
         {
             if (ViewState["SortDirection"] != null && ViewState["SortDirection"].ToString() == "ASC")
@@ -269,7 +242,6 @@ public partial class Outbound : System.Web.UI.Page
             }
         }
 
-        // Store the selected sort expression and direction in ViewState
         ViewState["SortExpression"] = column;
         ViewState["SortDirection"] = direction;
 

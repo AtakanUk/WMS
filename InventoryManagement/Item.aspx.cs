@@ -16,10 +16,14 @@ public partial class Item : System.Web.UI.Page
     SqlConnection sqlcon = new SqlConnection(@"Data Source =COBBRRA\SQLEXPRESS;Initial Catalog=WarehouseDB;Integrated Security=true");
     protected void Page_Load(object sender, EventArgs e)
     {
-
-        btndelete.Enabled = false;
+        if (!IsPostBack)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                Response.Redirect("~/Login.aspx");
+            }
+        }
         FillGridView();
-
     }
 
     protected void btnclear_Click(object sender, EventArgs e)
@@ -38,7 +42,6 @@ public partial class Item : System.Web.UI.Page
         txtprosize.Text = string.Empty;
         txtproweight.Text = string.Empty;
         btnsave.Text = "Save";
-        btndelete.Enabled = true;
 
     }
 
@@ -48,17 +51,20 @@ public partial class Item : System.Web.UI.Page
         {
             using (var db = new WarehouseDBEntities1())
             {
-                int productId = int.Parse(txtproid.Text.Trim());
-                var product = db.Products.Where(p => p.ProductId == productId).FirstOrDefault();
-
-                if (product != null)
+                bool check = int.TryParse(txtproid.Text.Trim(), out int productId);
+                if (check)
                 {
-                    txtproid.Text = product.ProductId.ToString();
-                    txtproname.Text = product.ProductName;
-                    txtprodes.Text = product.ProductDescription;
-                    txtproorigin.Text = product.ProductOrigin;
-                    txtprosize.Text = product.ProductSize;
-                    txtproweight.Text = product.ProductWeight;
+                    var product = db.Products.Where(p => p.ProductId == productId).FirstOrDefault();
+
+                    if (product != null)
+                    {
+                        txtproid.Text = product.ProductId.ToString();
+                        txtproname.Text = product.ProductName;
+                        txtprodes.Text = product.ProductDescription;
+                        txtproorigin.Text = product.ProductOrigin;
+                        txtprosize.Text = product.ProductSize;
+                        txtproweight.Text = product.ProductWeight;
+                    }
                 }
             }
         }
@@ -136,16 +142,22 @@ public partial class Item : System.Web.UI.Page
     {
         using (var dbContext = new WarehouseDBEntities1())
         {
-            var id = int.Parse(hfProductId.Value);
-            var productToDelete = dbContext.Products.FirstOrDefault(p => p.ProductId == id);
-            if (productToDelete != null)
+            if (!string.IsNullOrEmpty(txtproid.Text))
             {
-                dbContext.Products.Remove(productToDelete);
-                dbContext.SaveChanges();
+                var check = int.TryParse(txtproid.Text,out int id);
+                if(check)
+                {
+                    var productToDelete = dbContext.Products.FirstOrDefault(p => p.ProductId == id);
+                    if (productToDelete != null)
+                    {
+                        dbContext.Products.Remove(productToDelete);
+                        dbContext.SaveChanges();
+                    }
+                    clear();
+                    FillGridView();
+                    lblsuccessmassage.Text = "Deleted Successfully";
+                }
             }
-            clear();
-            FillGridView();
-            lblsuccessmassage.Text = "Deleted Successfully";
         }
     }
 

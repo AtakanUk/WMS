@@ -11,6 +11,13 @@ public partial class Inbound : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (!IsPostBack)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                Response.Redirect("~/Login.aspx");
+            }
+        }
         FillGridView();
     }
 
@@ -18,14 +25,7 @@ public partial class Inbound : System.Web.UI.Page
     {
         txtproid.Text = string.Empty;
         txtproname.Text = string.Empty;
-    }
-
-    public void clear()
-    {
-        hfProductId.Value = "";
-        lblerrormessage.Text = lblsuccessmassage.Text = "";
-        btnsave.Text = "Save";
-
+        Stock.Text = string.Empty;
     }
 
     protected void searchForExistingItem(object sender, EventArgs e)
@@ -79,6 +79,8 @@ public partial class Inbound : System.Web.UI.Page
                     product.ProductCount = updatedStock;
                     dbContext.Products.AddOrUpdate(product);
                     dbContext.SaveChanges();
+                    txtproid.Text = product.ProductId.ToString();
+                    txtproname.Text = product.ProductName;
                 }
             }
 

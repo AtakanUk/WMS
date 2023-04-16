@@ -44,6 +44,8 @@ public partial class Orders
     public Nullable<int> OrderProductId { get; set; }
     public Nullable<int> OrderProductAmount { get; set; }
     public Nullable<bool> OrderStatus { get; set; }
+    public Nullable<int> CarrierId { get; set; }
+    public string CarrierName { get; set; }
 }
 
 public partial class Products
