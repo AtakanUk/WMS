@@ -16,6 +16,6 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-    <img alt="inventoryPictures" class="auto-style43" src="Pictures/inventory-management-techniques-1024x579.jpg" />
+    <img alt="inventoryPictures" class="auto-style43" style="width:100%; height:auto;" src="Pictures/inventory-management-techniques-1024x579.jpg" />
 </asp:Content>
 
