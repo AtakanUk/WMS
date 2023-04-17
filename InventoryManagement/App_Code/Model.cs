@@ -29,13 +29,6 @@ public partial class Customer
     public string Phone { get; set; }
 }
 
-public partial class Login
-{
-    public int UserID { get; set; }
-    public string UserName { get; set; }
-    public string Password { get; set; }
-}
-
 public partial class Orders
 {
     public int Id { get; set; }
@@ -57,6 +50,13 @@ public partial class Products
     public string ProductWeight { get; set; }
     public string ProductSize { get; set; }
     public string ProductOrigin { get; set; }
+}
+
+public partial class UserInformations
+{
+    public int UserID { get; set; }
+    public string UserName { get; set; }
+    public string Password { get; set; }
 }
 
 public partial class GetProductById_Result

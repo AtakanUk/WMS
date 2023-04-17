@@ -73,7 +73,6 @@ public partial class Inbound : System.Web.UI.Page
                 }
                 else
                 {
-                    // Update existing product
                     var inbound = int.Parse(Stock.Text.Trim());
                     var updatedStock = product.ProductCount + inbound;
                     product.ProductCount = updatedStock;
@@ -122,7 +121,6 @@ public partial class Inbound : System.Web.UI.Page
             table.Load(reader);
         }
 
-        // Sort the data based on the selected column and direction
         table.DefaultView.Sort = e.SortExpression + " " + GetSortDirection(e.SortExpression);
         productGrid.DataSource = table;
         productGrid.DataBind();
@@ -130,11 +128,8 @@ public partial class Inbound : System.Web.UI.Page
 
     private string GetSortDirection(string column)
     {
-        // By default, sort the data in ascending order
         string direction = "ASC";
 
-        // If the data is already sorted by the selected column in ascending order,
-        // change the sort direction to descending order
         if (ViewState["SortExpression"] != null && ViewState["SortExpression"].ToString() == column)
         {
             if (ViewState["SortDirection"] != null && ViewState["SortDirection"].ToString() == "ASC")
@@ -143,7 +138,6 @@ public partial class Inbound : System.Web.UI.Page
             }
         }
 
-        // Store the selected sort expression and direction in ViewState
         ViewState["SortExpression"] = column;
         ViewState["SortDirection"] = direction;
 

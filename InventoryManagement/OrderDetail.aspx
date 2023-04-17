@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Product" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="PickPage.aspx.cs" Inherits="PickPage" %>
+﻿<%@ Page Title="Product" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="OrderDetail.aspx.cs" Inherits="OrderDetail" %>
 
 
 
@@ -12,8 +12,6 @@
             return true;
         }
     </script>
-
-
     <style type="text/css">
         .auto-style41 {
             text-align: center;
@@ -57,27 +55,26 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+            <table class="auto-style42">
+            <tr>
+                <td class="auto-style43" colspan="2">Order ID:</td>
+                <td class="auto-style44" colspan="2">
+                    <asp:TextBox ID="txtorderid" runat="server" MaxLength="99" onkeypress="return isNumberKey(event)" Width="128px"></asp:TextBox>
+                    <asp:Button ID="Button2" runat="server" Text="Check Order" Font-Bold="True" OnClick="searchForOrder" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <asp:Label ID="lblsuccessmassage" runat="server" Text="" ForeColor="Green"></asp:Label>
+                    <asp:Label ID="lblerrormessage" runat="server" Text="" ForeColor="Red"></asp:Label>
+                </td>
+            </tr>
+        </table>
     <div class="auto-style41">
-        <h3 class="auto-style52">Orders</h3>
+        <h3 class="auto-style52">Product List</h3>
+        <asp:HiddenField ID="hfProductId" runat="server" />
         <div class="auto-style51">
-            <asp:GridView ID="orderGrid" runat="server" AutoGenerateColumns="False" OnRowCommand="orderGrid_RowCommand" DataKeyNames="OrderId">
-                <Columns>
-                    <asp:BoundField DataField="OrderId" HeaderText="Order ID" />
-                    <asp:TemplateField HeaderText="Order Status">
-                        <ItemTemplate>
-                            <%# Eval("OrderStatus").ToString().Equals("False") ? "Not Completed" : "Completed" %>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:ButtonField ButtonType="Button" Text="Send" CommandName="GetOrderID" />
-                    <asp:ButtonField ButtonType="Button" Text="Check Order" CommandName="CheckOrder" />
-                </Columns>
-            </asp:GridView>
-            <br />
-        </div>
-    </div>
-    <div class="auto-style41">
-        <div class="auto-style51">
-            <asp:GridView ID="productGrid" runat="server" AutoGenerateColumns="false" HorizontalAlign="Center" OnSorting="productGrid_Sorting">
+            <asp:GridView ID="productGrid" runat="server" AutoGenerateColumns="false" HorizontalAlign="Center" AllowSorting="true" OnSorting="productGrid_Sorting">
                 <Columns>
                     <asp:BoundField DataField="ProductName" HeaderText="Product Name" SortExpression="ProductName" />
                     <asp:BoundField DataField="ProductId" HeaderText="Product Id" SortExpression="ProductId" />

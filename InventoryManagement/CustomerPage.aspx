@@ -106,13 +106,18 @@
             <br />
         </h4>
         <div class="auto-style51">
-            <asp:GridView ID="productGrid" runat="server" AutoGenerateColumns="false" HorizontalAlign="Center" AllowSorting="true" OnSorting="productGrid_Sorting">
+            <asp:GridView ID="productGrid" runat="server" AutoGenerateColumns="false" HorizontalAlign="Center" AllowSorting="true" OnSorting="productGrid_Sorting" OnRowDeleting="productGrid_RowDeleting">
                 <Columns>
                     <asp:BoundField DataField="CustomerId" HeaderText="Customer Id" SortExpression="CustomerId" />
                     <asp:BoundField DataField="CustomerName" HeaderText="Customer Name" SortExpression="CustomerName" />
                     <asp:BoundField DataField="Address" HeaderText="Address" SortExpression="Address" />
                     <asp:BoundField DataField="Email" HeaderText="Email" SortExpression="Email" />
                     <asp:BoundField DataField="Phone" HeaderText="Phone" SortExpression="Phone" />
+                    <asp:TemplateField>
+                        <ItemTemplate>
+                            <asp:Button ID="btnDelete" runat="server" Text="Delete" CommandName="Delete" CommandArgument='<%# Eval("CustomerId") %>' OnClick="btnDelete_Click" />
+                        </ItemTemplate>
+                    </asp:TemplateField>
                 </Columns>
             </asp:GridView>
             <br />

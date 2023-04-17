@@ -13,7 +13,6 @@ using FastMember;
 
 public partial class Item : System.Web.UI.Page
 {
-    SqlConnection sqlcon = new SqlConnection(@"Data Source =COBBRRA\SQLEXPRESS;Initial Catalog=WarehouseDB;Integrated Security=true");
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
@@ -22,8 +21,8 @@ public partial class Item : System.Web.UI.Page
             {
                 Response.Redirect("~/Login.aspx");
             }
+            FillGridView();
         }
-        FillGridView();
     }
 
     protected void btnclear_Click(object sender, EventArgs e)
@@ -31,6 +30,21 @@ public partial class Item : System.Web.UI.Page
         this.clear();
     }
 
+    protected void productGrid_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        using (var dbcontext = new WarehouseDBEntities1())
+        {
+            if (e.CommandName == "DeleteProduct")
+            {
+                int productId = Convert.ToInt32(e.CommandArgument);
+                var itemForDelete = dbcontext.Products.Where(x => x.ProductId == productId).FirstOrDefault();
+                dbcontext.Products.Remove(itemForDelete);
+                dbcontext.SaveChanges();
+                FillGridView();
+            }
+        }
+
+    }
     public void clear()
     {
         hfProductId.Value = string.Empty;
@@ -83,7 +97,6 @@ public partial class Item : System.Web.UI.Page
 
             if (product == null)
             {
-                // Create new product
                 var item = new Products
                 {
                     ProductId = productId,
@@ -98,7 +111,6 @@ public partial class Item : System.Web.UI.Page
             }
             else
             {
-                // Update existing product
                 product.ProductName = txtproname.Text.Trim();
                 product.ProductDescription = txtprodes.Text.Trim();
                 product.ProductOrigin = txtproorigin.Text.Trim();
@@ -134,7 +146,6 @@ public partial class Item : System.Web.UI.Page
             txtproname.Text = items.ProductName.ToString();
             txtprodes.Text = items.ProductDescription.ToString();
             btnsave.Text = "Update";
-            btndelete.Enabled = true;
         }
     }
 
@@ -163,6 +174,7 @@ public partial class Item : System.Web.UI.Page
 
     protected void productGrid_Sorting(object sender, GridViewSortEventArgs e)
     {
+        FillGridView();
         var dataSource = productGrid.DataSource as List<Products>;
         IEnumerable<Products> data = dataSource;
         DataTable table = new DataTable();
@@ -171,7 +183,6 @@ public partial class Item : System.Web.UI.Page
             table.Load(reader);
         }
 
-        // Sort the data based on the selected column and direction
         table.DefaultView.Sort = e.SortExpression + " " + GetSortDirection(e.SortExpression);
         productGrid.DataSource = table;
         productGrid.DataBind();
@@ -179,11 +190,8 @@ public partial class Item : System.Web.UI.Page
 
     private string GetSortDirection(string column)
     {
-        // By default, sort the data in ascending order
         string direction = "ASC";
 
-        // If the data is already sorted by the selected column in ascending order,
-        // change the sort direction to descending order
         if (ViewState["SortExpression"] != null && ViewState["SortExpression"].ToString() == column)
         {
             if (ViewState["SortDirection"] != null && ViewState["SortDirection"].ToString() == "ASC")
@@ -192,7 +200,6 @@ public partial class Item : System.Web.UI.Page
             }
         }
 
-        // Store the selected sort expression and direction in ViewState
         ViewState["SortExpression"] = column;
         ViewState["SortDirection"] = direction;
 

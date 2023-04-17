@@ -101,9 +101,7 @@
                 <td class="auto-style46">
                     <asp:Button ID="btnsave" runat="server" Text="Save" Font-Bold="True" OnClick="btnsave_Click" Width="55px" />
                 </td>
-                <td class="auto-style49">
-                    <asp:Button ID="btndelete" runat="server" Text="Delete" CommandArgument='<%# Eval("ProductId") %>' OnClick="btndelete_Click" Width="56px" Font-Bold="True" />
-                </td>
+
                 <td class="auto-style50">
                     <asp:Button ID="btnclear" runat="server" Text="Clear" Font-Bold="True" OnClick="btnclear_Click" />
                 </td>
@@ -118,19 +116,24 @@
         </table>
         <h4>
             <br />
-            <span class="auto-style52">Product List</span><br />
+            <span class="auto-style52">Item List</span><br />
             <br />
         </h4>
         <div class="auto-style51">
-            <asp:GridView ID="productGrid" runat="server" AutoGenerateColumns="false" HorizontalAlign="Center" AllowSorting="true" OnSorting="productGrid_Sorting">
+            <asp:GridView ID="productGrid" runat="server" AutoGenerateColumns="false" HorizontalAlign="Center" AllowSorting="true" OnSorting="productGrid_Sorting" OnRowCommand="productGrid_RowCommand">
                 <Columns>
                     <asp:BoundField DataField="ProductId" HeaderText="Item Id" SortExpression="ProductId" />
                     <asp:BoundField DataField="ProductName" HeaderText="Item Name" SortExpression="ProductName" />
                     <asp:BoundField DataField="ProductDescription" HeaderText="Item Description" SortExpression="ProductDescription" />
-                    <asp:BoundField DataField="ProductCount" HeaderText="Product Count" SortExpression="ProductCount" />
-                    <asp:BoundField DataField="ProductWeight" HeaderText="Product Weight" />
-                    <asp:BoundField DataField="ProductSize" HeaderText="Product Size" />
-                    <asp:BoundField DataField="ProductOrigin" HeaderText="Product Origin" SortExpression="ProductOrigin" />
+                    <asp:BoundField DataField="ProductCount" HeaderText="Item Count" SortExpression="ProductCount" />
+                    <asp:BoundField DataField="ProductWeight" HeaderText="Item Weight" />
+                    <asp:BoundField DataField="ProductSize" HeaderText="Item Size" />
+                    <asp:BoundField DataField="ProductOrigin" HeaderText="Item Origin" SortExpression="ProductOrigin" />
+                    <asp:TemplateField>
+                        <ItemTemplate>
+                            <asp:Button ID="btnDelete" runat="server" Text="Delete" CommandName="DeleteProduct" CommandArgument='<%# Eval("ProductId") %>' />
+                        </ItemTemplate>
+                    </asp:TemplateField>
                 </Columns>
             </asp:GridView>
             <br />

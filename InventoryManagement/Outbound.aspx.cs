@@ -10,9 +10,16 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.Data.Entity.Migrations;
 using System.Runtime.Remoting.Contexts;
 using FastMember;
+using static Outbound;
+using System.Runtime.Remoting.Messaging;
 
 public partial class Outbound : System.Web.UI.Page
 {
+    public class OutboundOrder
+    {
+        public int? OrderProductAmount { get; set; }
+        public string CustomerName { get; set; }
+    }
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
@@ -21,21 +28,41 @@ public partial class Outbound : System.Web.UI.Page
             {
                 Response.Redirect("~/Login.aspx");
             }
+
+            using (var dbcontext = new WarehouseDBEntities1())
+            {
+                var query = dbcontext.Products.ToList();
+                if (query != null)
+                {
+                    foreach (var itemId in query)
+                    {
+
+                        var itemValue = itemId.ProductId.ToString() + " --- " + itemId.ProductName;
+                        ddlItemId.Items.Add(new ListItem(itemValue));
+                    }
+                }
+                
+                ddlCustomers.DataSource = dbcontext.Customer.ToList();
+                ddlCustomers.DataTextField = "CustomerName";
+                ddlCustomers.DataValueField = "CustomerId";
+                ddlCustomers.DataBind();
+            }
+
         }
 
-        Dictionary<int, int> basket = Session["Basket"] as Dictionary<int, int>;
+        Dictionary<int, OutboundOrder> basket = Session["Basket"] as Dictionary<int, OutboundOrder>;
         if (basket == null)
         {
-            basket = new Dictionary<int, int>();
+            basket = new Dictionary<int, OutboundOrder>();
         }
         DataTable basketTable = new DataTable();
         basketTable.Columns.Add("ProductId", typeof(string));
-        basketTable.Columns.Add("ProductCount", typeof(int));
+        basketTable.Columns.Add("OrderProductAmount", typeof(int));
+        basketTable.Columns.Add("CustomerName", typeof(string));
         foreach (var item in basket)
         {
-            basketTable.Rows.Add(item.Key, item.Value);
+            basketTable.Rows.Add(item.Key, item.Value.OrderProductAmount, item.Value.CustomerName);
         }
-
         basketGrid.DataSource = basketTable;
         basketGrid.DataBind();
     }
@@ -48,15 +75,17 @@ public partial class Outbound : System.Web.UI.Page
     public void clear()
     {
         Session.Remove("Basket");
-        Dictionary<int, int> basket = new Dictionary<int, int>();
+        Dictionary<int, OutboundOrder> basket = new Dictionary<int, OutboundOrder>();
         DataTable basketTable = new DataTable();
+
+
         basketTable.Columns.Add("ProductId", typeof(string));
-        basketTable.Columns.Add("ProductCount", typeof(int));
+        basketTable.Columns.Add("OrderProductAmount", typeof(int));
+        basketTable.Columns.Add("CustomerName", typeof(string));
         foreach (var item in basket)
         {
-            basketTable.Rows.Add(item.Key, item.Value);
+            basketTable.Rows.Add(item.Key, item.Value.OrderProductAmount, item.Value.CustomerName);
         }
-
         basketGrid.DataSource = basketTable;
         basketGrid.DataBind();
 
@@ -66,7 +95,10 @@ public partial class Outbound : System.Web.UI.Page
     {
         using (var dbContext = new WarehouseDBEntities1())
         {
-            int productId = int.Parse(txtproid.Text.Trim());
+            string inputString = ddlItemId.SelectedValue;
+            string separator = " --- ";
+            string result = inputString.Substring(0, inputString.IndexOf(separator)).Trim();
+            int productId = int.Parse(result);
             var product = dbContext.Products.Where(p => p.ProductId == productId).FirstOrDefault();
 
             if (product == null)
@@ -94,17 +126,18 @@ public partial class Outbound : System.Web.UI.Page
     {
         using (var dbContext = new WarehouseDBEntities1())
         {
-            Dictionary<int, int> basket = Session["Basket"] as Dictionary<int, int>;
+            Dictionary<int, OutboundOrder> basket = Session["Basket"] as Dictionary<int, OutboundOrder>;
             if (basket == null)
             {
-                basket = new Dictionary<int, int>();
+                basket = new Dictionary<int, OutboundOrder>();
             }
             DataTable basketTable = new DataTable();
             basketTable.Columns.Add("ProductId", typeof(string));
-            basketTable.Columns.Add("ProductCount", typeof(int));
+            basketTable.Columns.Add("OrderProductAmount", typeof(int));
+            basketTable.Columns.Add("CustomerName", typeof(string));
             foreach (var item in basket)
             {
-                basketTable.Rows.Add(item.Key, item.Value);
+                basketTable.Rows.Add(item.Key, item.Value.OrderProductAmount, item.Value.CustomerName);
             }
             var orderNumber = dbContext.Orders.OrderByDescending(x => x.OrderId).FirstOrDefault();
             int newOrderNumber = 0;
@@ -114,18 +147,21 @@ public partial class Outbound : System.Web.UI.Page
             }
             foreach (DataRow row in basketTable.Rows)
             {
+                string inputString = ddlCustomers.SelectedValue;
+                var check = int.TryParse(inputString, out int cusNumber);
 
                 string productId = row["ProductId"].ToString();
-                string productCount = row["ProductCount"].ToString();
+                string productCount = row["OrderProductAmount"].ToString();
                 var productIdAsInt = int.Parse(productId);
                 var productCountAsInt = int.Parse(productCount);
-                var product = dbContext.Products.Where(p => p.ProductId == productIdAsInt).FirstOrDefault();          
+                var product = dbContext.Products.Where(p => p.ProductId == productIdAsInt).FirstOrDefault();
                 var newOrder = new Orders()
                 {
                     OrderId = newOrderNumber,
                     OrderProductAmount = productCountAsInt,
                     OrderProductId = productIdAsInt,
-                    OrderStatus = false
+                    OrderStatus = false,
+                    CustomerId = cusNumber
                 };
 
                 dbContext.Orders.Add(newOrder);
@@ -149,34 +185,56 @@ public partial class Outbound : System.Web.UI.Page
 
     protected void AddToShipmentButton_Click(object sender, EventArgs e)
     {
-        bool productIdcheck = int.TryParse(txtproid.Text,out int productId);
-        bool productCountCheck = int.TryParse(txtitemcount.Text,out int productCount);
-        if(productCountCheck && productIdcheck)
+        string inputString = ddlItemId.SelectedValue;
+        string separator = " --- ";
+        string result = inputString.Substring(0, inputString.IndexOf(separator)).Trim();
+
+        string resultForCus = ddlCustomers.SelectedItem.Text;
+
+
+
+
+
+
+        bool productIdcheck = int.TryParse(result, out int productId);
+        bool productCountCheck = int.TryParse(txtitemcount.Text, out int productCount);
+        if (productCountCheck && productIdcheck)
         {
-            Dictionary<int, int> basket = Session["Basket"] as Dictionary<int, int>;
+            Dictionary<int, OutboundOrder> basket = Session["Basket"] as Dictionary<int, OutboundOrder>;
             if (basket == null)
             {
-                basket = new Dictionary<int, int>();
+                basket = new Dictionary<int, OutboundOrder>();
             }
 
 
             if (basket.ContainsKey(productId))
             {
-                basket[productId] = productCount;
+                basket[productId] = new OutboundOrder 
+                {
+                 CustomerName = resultForCus,
+                 OrderProductAmount = productCount
+                };
             }
             else
             {
-                basket.Add(productId, productCount);
+                var order = new OutboundOrder
+                {
+
+                    CustomerName = resultForCus,
+                    OrderProductAmount = productCount
+                };
+                basket.Add(productId, order);
             }
 
             Session["Basket"] = basket;
 
             DataTable basketTable = new DataTable();
             basketTable.Columns.Add("ProductId", typeof(string));
-            basketTable.Columns.Add("ProductCount", typeof(int));
+            basketTable.Columns.Add("OrderProductAmount", typeof(int));
+            basketTable.Columns.Add("CustomerName", typeof(string));
             foreach (var item in basket)
             {
-                basketTable.Rows.Add(item.Key, item.Value);
+                basketTable.Rows.Add(item.Key, item.Value.OrderProductAmount,item.Value.CustomerName);
             }
             basketGrid.DataSource = basketTable;
             basketGrid.DataBind();
@@ -191,7 +249,7 @@ public partial class Outbound : System.Web.UI.Page
             int ProductId = Convert.ToInt32((sender as LinkButton).CommandArgument);
             var items = dbContext.Products.Where(x => x.ProductId == ProductId).FirstOrDefault();
             hfProductId.Value = items.ProductId.ToString();
-            txtproid.Text = items.ProductId.ToString();
+            ddlItemId.SelectedValue = items.ProductId.ToString();
             btnsave.Text = "Update";
         }
     }
@@ -223,7 +281,6 @@ public partial class Outbound : System.Web.UI.Page
             table.Load(reader);
         }
 
-        // Sort the data based on the selected column and direction
         table.DefaultView.Sort = e.SortExpression + " " + GetSortDirection(e.SortExpression);
         basketGrid.DataSource = table;
         basketGrid.DataBind();

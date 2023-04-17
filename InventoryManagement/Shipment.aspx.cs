@@ -54,29 +54,6 @@ public partial class Shipment : System.Web.UI.Page
         }
     }
 
-    //protected void orderGrid_RowDataBound(object sender, GridViewRowEventArgs e)
-    //{
-    //    if (e.Row.RowType == DataControlRowType.DataRow)
-    //    {
-    //        DropDownList ddlItems = (DropDownList)e.Row.FindControl("ddlItems");
-    //        int orderId = Convert.ToInt32(orderGrid.DataKeys[e.Row.RowIndex].Value);
-
-    //        using (var dbContext = new WarehouseDBEntities1())
-    //        {
-    //            var items = from i in dbContext.Carrier
-    //                        select new { i.CarrierName};
-
-    //            ddlItems.DataSource = items;
-    //            ddlItems.DataBind();
-
-    //            var order = dbContext.Orders.SingleOrDefault(o => o.OrderId == orderId);
-    //            if (order != null && order.CarrierId.HasValue)
-    //            {
-    //                ddlItems.SelectedValue = order.CarrierId.ToString();
-    //            }
-    //        }
-    //    }
-    //}
 
     protected void orderGrid_RowCommand(object sender, GridViewCommandEventArgs e)
     {
@@ -128,8 +105,6 @@ public partial class Shipment : System.Web.UI.Page
         using (var dbcontext = new WarehouseDBEntities1())
         {
 
-            //var carrierList = from carriers in dbcontext.Carrier
-            //             select carriers.CarrierName;
 
             var carrierList = dbcontext.Carrier.ToList();
             if (carrierList != null)
@@ -151,7 +126,6 @@ public partial class Shipment : System.Web.UI.Page
             table.Load(reader);
         }
 
-        // Sort the data based on the selected column and direction
         table.DefaultView.Sort = e.SortExpression + " " + GetSortDirection(e.SortExpression);
         orderGrid.DataSource = table;
         orderGrid.DataBind();
@@ -159,11 +133,8 @@ public partial class Shipment : System.Web.UI.Page
 
     private string GetSortDirection(string column)
     {
-        // By default, sort the data in ascending order
         string direction = "ASC";
 
-        // If the data is already sorted by the selected column in ascending order,
-        // change the sort direction to descending order
         if (ViewState["SortExpression"] != null && ViewState["SortExpression"].ToString() == column)
         {
             if (ViewState["SortDirection"] != null && ViewState["SortDirection"].ToString() == "ASC")
@@ -172,7 +143,6 @@ public partial class Shipment : System.Web.UI.Page
             }
         }
 
-        // Store the selected sort expression and direction in ViewState
         ViewState["SortExpression"] = column;
         ViewState["SortDirection"] = direction;
 

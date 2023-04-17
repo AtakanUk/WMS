@@ -81,7 +81,7 @@
 
             <tr>
                 <td class="auto-style46">
-                    <asp:Button ID="btnsave" runat="server" Text="Save" Font-Bold="True" OnClick="btnsave_Click" Width="55px" />
+                    <asp:Button ID="btnsave" runat="server" Text="Order" Font-Bold="True" OnClick="btnsave_Click" Width="55px" />
                 </td>
 
                 <td class="auto-style50">
@@ -98,7 +98,7 @@
         </table>
         <h4>
             <br />
-            <span class="auto-style52">Product List</span><br />
+            <span class="auto-style52">Item List</span><br />
             <br />
         </h4>
         <div class="auto-style51">
@@ -107,10 +107,10 @@
                     <asp:BoundField DataField="ProductId" HeaderText="Item Id" SortExpression="ProductId" />
                     <asp:BoundField DataField="ProductName" HeaderText="Item Name" SortExpression="ProductName" />
                     <asp:BoundField DataField="ProductDescription" HeaderText="Item Description" SortExpression="ProductDescription" />
-                    <asp:BoundField DataField="ProductCount" HeaderText="Product Count" SortExpression="ProductCount" />
-                    <asp:BoundField DataField="ProductWeight" HeaderText="Product Weight" />
-                    <asp:BoundField DataField="ProductSize" HeaderText="Product Size" />
-                    <asp:BoundField DataField="ProductOrigin" HeaderText="Product Origin" SortExpression="ProductOrigin" />
+                    <asp:BoundField DataField="ProductCount" HeaderText="Item Count" SortExpression="ProductCount" />
+                    <asp:BoundField DataField="ProductWeight" HeaderText="Item Weight" />
+                    <asp:BoundField DataField="ProductSize" HeaderText="Item Size" />
+                    <asp:BoundField DataField="ProductOrigin" HeaderText="Item Origin" SortExpression="ProductOrigin" />
                 </Columns>
             </asp:GridView>
             <br />

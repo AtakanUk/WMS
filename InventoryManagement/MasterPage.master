@@ -87,7 +87,8 @@
                     <td class="auto-style39" style="color: #797979; font-weight: bold;"><a class="auto-style41" href="CustomerPage.aspx"><span class="auto-style42">Customer</span></a></td>
                     <td class="auto-style39" style="color: #797979; font-weight: bold;"><a class="auto-style41" href="CarrierPage.aspx"><span class="auto-style42">Carrier</span></a></td>
                     <td class="auto-style39" style="color: #797979; font-weight: bold;"><a class="auto-style41" href="Outbound.aspx"><span class="auto-style42">Outbound</span></a></td>
-                    <td class="auto-style39" style="color: #797979; font-weight: bold;"><a class="auto-style41" href="PickPage.aspx"><span class="auto-style42">Pick Page</span></a></td>           
+                    <td class="auto-style39" style="color: #797979; font-weight: bold;"><a class="auto-style41" href="OrderDetail.aspx"><span class="auto-style42">Order Detail</span></a></td>
+                    <td class="auto-style39" style="color: #797979; font-weight: bold;"><a class="auto-style41" href="PickPage.aspx"><span class="auto-style42">Pick Page</span></a></td>
                     <td class="auto-style39" style="color: #797979; font-weight: bold;"><a class="auto-style41" href="Shipment.aspx"><span class="auto-style42">Shipment</span></a></td>
                     <td class="auto-style30" style="color: #797979; font-weight: bold;">
 

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="Login.aspx.cs" Inherits="Login" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="Register.aspx.cs" Inherits="Register" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
     <style type="text/css">
@@ -28,7 +28,7 @@
     <table class="auto-style43">
         <tr>
             <td class="auto-style44" colspan="2">
-                <h3><strong>Login</strong></h3>
+                <h3><strong>Register</strong></h3>
             </td>
         </tr>
         <tr>
@@ -45,16 +45,11 @@
         </tr>
         <tr>
             <td class="auto-style46">
-                <asp:Button ID="btnLogin" runat="server" Font-Bold="True" ForeColor="#006600" Text="Login" Font-Size="Medium" OnClick="btnLogin_Click" />
+                <asp:Button ID="btnLogin" runat="server" Font-Bold="True" ForeColor="#006600" Text="Register" Font-Size="Medium" OnClick="btnLogin_Click" />
             </td>
             <td class="secclmn">
-                <asp:Button ID="btnRefresh" runat="server" Font-Bold="True" ForeColor="#006600" Text="Refresh" Font-Size="Medium" OnClick="btnRefresh_Click" />&nbsp; &nbsp;
+                <asp:Button ID="btnRefresh" runat="server" Font-Bold="True" ForeColor="#006600" Text="Clear" Font-Size="Medium" OnClick="btnRefresh_Click" />&nbsp; &nbsp;
                 <asp:Label ID="lblerror" runat="server" ForeColor="#CC0000"></asp:Label>
-            </td>
-        </tr>
-                <tr>
-            <td class="auto-style46">
-                <asp:Button ID="Button1" runat="server" Font-Bold="True" ForeColor="#006600" Text="Register" Font-Size="Medium" OnClick="btnRegister_Click" />
             </td>
         </tr>
     </table>

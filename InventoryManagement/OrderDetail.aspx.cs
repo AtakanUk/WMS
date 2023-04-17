@@ -11,8 +11,16 @@ using System.Data.Entity.Migrations;
 using System.Runtime.Remoting.Contexts;
 using FastMember;
 
-public partial class Stock : System.Web.UI.Page
+public partial class OrderDetail : System.Web.UI.Page
 {
+    public class OrderProductType
+    {
+        public int? OrderProductAmount { get; set; }
+        public bool? OrderStatus { get; set; }
+        public int ProductId { get; set; }
+        public string ProductName { get; set; }
+    }
+
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
@@ -23,18 +31,44 @@ public partial class Stock : System.Web.UI.Page
             }
         }
 
-        FillGridView();
+    }
+
+    protected void searchForOrder(object sender, EventArgs e)
+    {
+        var check = int.TryParse(txtorderid.Text, out int orderId);
+        if (check)
+        {
+            FillGridView(orderId);
+        }
 
     }
 
-    void FillGridView()
+
+    void FillGridView(int orderId)
     {
         using (var dbContext = new WarehouseDBEntities1())
         {
-            var items = dbContext.Products.ToList();
-            productGrid.DataSource = items;
+            List<OrderProductType> orderList = new List<OrderProductType>();
+            var items = dbContext.Orders.Where(x=>x.OrderId == orderId).ToList();
+            foreach (var item in items)
+            {
+                OrderProductType orderToAdd = new OrderProductType();
+                var product = dbContext.Products.Where(x => x.ProductId == item.OrderProductId).FirstOrDefault();
+                if (product == null)
+                {
+                    return;
+                }
+                orderToAdd.ProductName = product.ProductName;
+                orderToAdd.ProductId = product.ProductId;
+                orderToAdd.OrderStatus = item.OrderStatus;
+                orderToAdd.OrderProductAmount = item.OrderProductAmount;
+
+                orderList.Add(orderToAdd);
+            }
+            productGrid.DataSource = orderList;
             productGrid.DataBind();
         }
+        
     }
 
     protected void productGrid_Sorting(object sender, GridViewSortEventArgs e)

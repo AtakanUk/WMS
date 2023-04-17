@@ -17,8 +17,9 @@ public partial class CustomerPage : System.Web.UI.Page
             {
                 Response.Redirect("~/Login.aspx");
             }
+            FillGridView();
         }
-        FillGridView();
+        
     }
 
     protected void btnclear_Click(object sender, EventArgs e)
@@ -62,6 +63,29 @@ public partial class CustomerPage : System.Web.UI.Page
             FillGridView();
         }
     }
+    protected void productGrid_RowDeleting(object sender, GridViewDeleteEventArgs e)
+    {
+
+    }
+
+    protected void btnDelete_Click(object sender, EventArgs e)
+    {
+        using (var dbcontext = new WarehouseDBEntities1())
+        {
+            Button btn = (Button)sender;
+            string customerId = btn.CommandArgument;
+            var check = int.TryParse(customerId, out int customerNumber);
+            if(check)
+            {
+               var itemToRemove = dbcontext.Customer.Where(x => x.CustomerId == customerNumber).FirstOrDefault();
+                dbcontext.Customer.Remove(itemToRemove);
+                dbcontext.SaveChanges();
+                FillGridView();
+            }
+
+        }
+
+    }
 
     void FillGridView()
     {
@@ -75,6 +99,7 @@ public partial class CustomerPage : System.Web.UI.Page
 
     protected void productGrid_Sorting(object sender, GridViewSortEventArgs e)
     {
+        FillGridView();
         var dataSource = productGrid.DataSource as List<Customer>;
         IEnumerable<Customer> data = dataSource;
         DataTable table = new DataTable();
@@ -83,7 +108,6 @@ public partial class CustomerPage : System.Web.UI.Page
             table.Load(reader);
         }
 
-        // Sort the data based on the selected column and direction
         table.DefaultView.Sort = e.SortExpression + " " + GetSortDirection(e.SortExpression);
         productGrid.DataSource = table;
         productGrid.DataBind();
@@ -91,11 +115,8 @@ public partial class CustomerPage : System.Web.UI.Page
 
     private string GetSortDirection(string column)
     {
-        // By default, sort the data in ascending order
         string direction = "ASC";
 
-        // If the data is already sorted by the selected column in ascending order,
-        // change the sort direction to descending order
         if (ViewState["SortExpression"] != null && ViewState["SortExpression"].ToString() == column)
         {
             if (ViewState["SortDirection"] != null && ViewState["SortDirection"].ToString() == "ASC")
@@ -104,7 +125,6 @@ public partial class CustomerPage : System.Web.UI.Page
             }
         }
 
-        // Store the selected sort expression and direction in ViewState
         ViewState["SortExpression"] = column;
         ViewState["SortDirection"] = direction;
 

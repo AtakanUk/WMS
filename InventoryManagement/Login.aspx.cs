@@ -13,12 +13,17 @@ public partial class Login : System.Web.UI.Page
 
     }
 
+    protected void btnRegister_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("~/Register.aspx");
+    }
+
     protected void btnLogin_Click(object sender, EventArgs e)
     {
         bool bLogged = false;
         using (var dbcontext = new WarehouseDBEntities1())
         {
-            var loginCheck = dbcontext.Login.Where(x => x.UserName == txtUserName.Text && x.Password == txtPassword.Text).ToList().FirstOrDefault();
+            var loginCheck = dbcontext.UserInformations.Where(x => x.UserName == txtUserName.Text && x.Password == txtPassword.Text).ToList().FirstOrDefault();
             if (loginCheck != null)
             {
                 bLogged = true;
@@ -31,27 +36,25 @@ public partial class Login : System.Web.UI.Page
             }
         }
 
-        // Authenticate the user against the database
         if (bLogged)
         {
-            // Create a new FormsAuthenticationTicket object
             FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(
-                1, // version number
-                txtUserName.Text, // user name
-                DateTime.Now, // issue date
-                DateTime.Now.AddMinutes(30), // expiration date
-                true, // persistent cookie
-                "" // user data (optional)
+                1, 
+                txtUserName.Text, 
+                DateTime.Now, 
+                DateTime.Now.AddMinutes(30), 
+                true, 
+                "" 
             );
 
-            // Encrypt the ticket and store it in a cookie
+            
             HttpCookie authCookie = new HttpCookie(
                 FormsAuthentication.FormsCookieName,
                 FormsAuthentication.Encrypt(ticket)
             );
             Response.Cookies.Add(authCookie);
 
-            // Redirect the user to the requested page, or to the default page
+            
             string returnUrl = Request.QueryString["ReturnUrl"];
             if (!string.IsNullOrEmpty(returnUrl))
             {

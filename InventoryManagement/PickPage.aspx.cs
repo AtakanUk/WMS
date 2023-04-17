@@ -13,6 +13,13 @@ using FastMember;
 
 public partial class PickPage : System.Web.UI.Page
 {
+    public class OrderProductType
+    {
+        public int? OrderProductAmount { get; set; }
+        public bool? OrderStatus { get; set; }
+        public int ProductId { get; set; }
+        public string ProductName { get; set; }
+    }
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
@@ -69,11 +76,46 @@ public partial class PickPage : System.Web.UI.Page
                     }
                 }
             }
+            else if (e.CommandName == "CheckOrder")
+            {
+                int index = Convert.ToInt32(e.CommandArgument);
+                GridViewRow row = orderGrid.Rows[index];
+                int orderId = Convert.ToInt32(orderGrid.DataKeys[row.RowIndex].Value);
+                getOrder(orderId);
+            }
         }
+    }
+
+    void getOrder(int orderId)
+    {
+        using (var dbContext = new WarehouseDBEntities1())
+        {
+            List<OrderProductType> orderList = new List<OrderProductType>();
+            var items = dbContext.Orders.Where(x => x.OrderId == orderId).ToList();
+            foreach (var item in items)
+            {
+                OrderProductType orderToAdd = new OrderProductType();
+                var product = dbContext.Products.Where(x => x.ProductId == item.OrderProductId).FirstOrDefault();
+                if(product == null)
+                {
+                    return;
+                }
+                orderToAdd.ProductName = string.IsNullOrEmpty(product.ProductName) ? string.Empty : product.ProductName;
+                orderToAdd.ProductId = product.ProductId;
+                orderToAdd.OrderStatus = item.OrderStatus;
+                orderToAdd.OrderProductAmount = item.OrderProductAmount;
+
+                orderList.Add(orderToAdd);
+            }
+            productGrid.DataSource = orderList;
+            productGrid.DataBind();
+        }
+
     }
 
     protected void productGrid_Sorting(object sender, GridViewSortEventArgs e)
     {
+        FillGridView();
         var dataSource = orderGrid.DataSource as List<Orders>;
         IEnumerable<Orders> data = dataSource;
         DataTable table = new DataTable();
@@ -82,7 +124,6 @@ public partial class PickPage : System.Web.UI.Page
             table.Load(reader);
         }
 
-        // Sort the data based on the selected column and direction
         table.DefaultView.Sort = e.SortExpression + " " + GetSortDirection(e.SortExpression);
         orderGrid.DataSource = table;
         orderGrid.DataBind();
@@ -90,11 +131,8 @@ public partial class PickPage : System.Web.UI.Page
 
     private string GetSortDirection(string column)
     {
-        // By default, sort the data in ascending order
         string direction = "ASC";
 
-        // If the data is already sorted by the selected column in ascending order,
-        // change the sort direction to descending order
         if (ViewState["SortExpression"] != null && ViewState["SortExpression"].ToString() == column)
         {
             if (ViewState["SortDirection"] != null && ViewState["SortDirection"].ToString() == "ASC")
@@ -103,7 +141,6 @@ public partial class PickPage : System.Web.UI.Page
             }
         }
 
-        // Store the selected sort expression and direction in ViewState
         ViewState["SortExpression"] = column;
         ViewState["SortDirection"] = direction;
 

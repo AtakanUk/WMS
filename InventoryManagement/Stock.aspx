@@ -56,15 +56,15 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <div class="auto-style41">
-        <h3 class="auto-style52">Product List</h3>
+        <h3 class="auto-style52">Item List</h3>
         <asp:HiddenField ID="hfProductId" runat="server" />
         <div class="auto-style51">
             <asp:GridView ID="productGrid" runat="server" AutoGenerateColumns="false" HorizontalAlign="Center" AllowSorting="true" OnSorting="productGrid_Sorting">
                 <Columns>
-                    <asp:BoundField DataField="ProductId" HeaderText="Product Id" SortExpression="ProductId" />
-                    <asp:BoundField DataField="ProductName" HeaderText="Product Name" SortExpression="ProductName" />
-                    <asp:BoundField DataField="ProductDescription" HeaderText="Product Description" SortExpression="ProductDescription" />
-                    <asp:BoundField DataField="ProductCount" HeaderText="Product Count" SortExpression="ProductCount" />
+                    <asp:BoundField DataField="ProductId" HeaderText="Item Id" SortExpression="ProductId" />
+                    <asp:BoundField DataField="ProductName" HeaderText="Item Name" SortExpression="ProductName" />
+                    <asp:BoundField DataField="ProductDescription" HeaderText="Item Description" SortExpression="ProductDescription" />
+                    <asp:BoundField DataField="ProductCount" HeaderText="Item Count" SortExpression="ProductCount" />
                 </Columns>
             </asp:GridView>
             <br />

@@ -17,8 +17,9 @@ public partial class CarrierPage : System.Web.UI.Page
             {
                 Response.Redirect("~/Login.aspx");
             }
+            FillGridView();
         }
-        FillGridView();
+
     }
 
     protected void btnclear_Click(object sender, EventArgs e)
@@ -77,6 +78,7 @@ public partial class CarrierPage : System.Web.UI.Page
 
     protected void productGrid_Sorting(object sender, GridViewSortEventArgs e)
     {
+        FillGridView();
         var dataSource = productGrid.DataSource as List<Carrier>;
         IEnumerable<Carrier> data = dataSource;
         DataTable table = new DataTable();
@@ -85,19 +87,33 @@ public partial class CarrierPage : System.Web.UI.Page
             table.Load(reader);
         }
 
-        // Sort the data based on the selected column and direction
         table.DefaultView.Sort = e.SortExpression + " " + GetSortDirection(e.SortExpression);
         productGrid.DataSource = table;
         productGrid.DataBind();
     }
 
+    protected void productGrid_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        using (var dbcontext = new WarehouseDBEntities1())
+        {
+            if (e.CommandName == "DeleteRow")
+            {
+                int carrierId = Convert.ToInt32(e.CommandArgument);
+                var itemToDelete = dbcontext.Carrier.Find(carrierId);
+                dbcontext.Carrier.Remove(itemToDelete);
+                dbcontext.SaveChanges();
+                FillGridView();
+            }
+        }
+
+    }
+
     private string GetSortDirection(string column)
     {
-        // By default, sort the data in ascending order
+
         string direction = "ASC";
 
-        // If the data is already sorted by the selected column in ascending order,
-        // change the sort direction to descending order
+
         if (ViewState["SortExpression"] != null && ViewState["SortExpression"].ToString() == column)
         {
             if (ViewState["SortDirection"] != null && ViewState["SortDirection"].ToString() == "ASC")
@@ -106,7 +122,7 @@ public partial class CarrierPage : System.Web.UI.Page
             }
         }
 
-        // Store the selected sort expression and direction in ViewState
+
         ViewState["SortExpression"] = column;
         ViewState["SortDirection"] = direction;
 

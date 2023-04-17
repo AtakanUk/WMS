@@ -58,17 +58,21 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <div class="auto-style41">
-        <h3 class="auto-style52">Item Registration</h3>
+        <h3 class="auto-style52">Outbound Order</h3>
         <asp:HiddenField ID="hfProductId" runat="server" />
         <table class="auto-style42">
             <tr>
                 <td class="auto-style43" colspan="2">Item ID:</td>
                 <td class="auto-style44" colspan="2">
-                    <asp:TextBox ID="txtproid" runat="server" MaxLength="99" onkeypress="return isNumberKey(event)" Width="128px"></asp:TextBox>
+                    <asp:DropDownList ID="ddlItemId" runat="server" Width="128px"></asp:DropDownList>
                 </td>
                 <td class="auto-style43" colspan="2">Item Count:</td>
                 <td class="auto-style44" colspan="2">
                     <asp:TextBox ID="txtitemcount" runat="server" MaxLength="99" onkeypress="return isNumberKey(event)" Width="128px"></asp:TextBox>
+                </td>
+                <td class="auto-style43" colspan="2">Customer Name:</td>
+                <td class="auto-style44" colspan="2">
+                    <asp:DropDownList ID="ddlCustomers" runat="server" Width="128px"></asp:DropDownList>
                 </td>
             </tr>
             <tr>
@@ -92,14 +96,15 @@
         </table>
         <h4>
             <br />
-            <span class="auto-style52">Outbound Order</span><br />
             <br />
         </h4>
+        <h4 class="auto-style52">Selected Items</h4>
         <div class="auto-style51">
-            <asp:GridView ID="basketGrid" runat="server" AutoGenerateColumns="False">
+            <asp:GridView ID="basketGrid" runat="server" AutoGenerateColumns="False" HeaderText="Selected Items">
                 <Columns>
-                    <asp:BoundField DataField="ProductId" HeaderText="Product ID" />
-                    <asp:BoundField DataField="ProductCount" HeaderText="Product Count" />
+                    <asp:BoundField DataField="ProductId" HeaderText="Item Id" />
+                    <asp:BoundField DataField="OrderProductAmount" HeaderText="Product Count" />
+                    <asp:BoundField DataField="CustomerName" HeaderText="Customer Name" />
                 </Columns>
             </asp:GridView>
             <br />
