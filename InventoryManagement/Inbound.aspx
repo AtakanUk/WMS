@@ -3,6 +3,8 @@
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script type="text/javascript">
         function isNumberKey(evt) {
             var charCode = (evt.which) ? evt.which : event.keyCode;
@@ -52,41 +54,51 @@
         .auto-style52 {
             color: #003399;
         }
+
+        .table-borderless {
+            border-collapse: separate;
+            border-spacing: 5px 5px;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <div class="auto-style41">
         <h3 class="auto-style52">Inbound</h3>
         <asp:HiddenField ID="hfProductId" runat="server" />
-        <table class="auto-style42">
+        <table class="auto-style42 table-borderless">
             <tr>
                 <td class="auto-style43" colspan="2">Item ID:</td>
                 <td class="auto-style44" colspan="2">
-                    <asp:TextBox ID="txtproid" runat="server" MaxLength="99" onkeypress="return isNumberKey(event)" Width="128px"></asp:TextBox>
-                    <asp:Button ID="Button2" runat="server" Text="Check" Font-Bold="True" OnClick="searchForExistingItem" />
+                    <asp:TextBox ID="txtproid" CssClass="form-control" runat="server" MaxLength="99" onkeypress="return isNumberKey(event)" Width="128px"></asp:TextBox>
                 </td>
             </tr>
             <tr>
                 <td class="auto-style43" colspan="2">Item Name:</td>
                 <td class="auto-style44" colspan="2">
-                    <asp:TextBox ID="txtproname" ReadOnly="true" runat="server" Width="128px"></asp:TextBox>
+                    <asp:TextBox ID="txtproname" CssClass="form-control" ReadOnly="true" runat="server" Width="128px"></asp:TextBox>
                 </td>
             </tr>
             <tr>
                 <td class="auto-style43" colspan="2">Stock:</td>
                 <td class="auto-style44" colspan="2">
-                    <asp:TextBox ID="Stock" runat="server" MaxLength="99" onkeypress="return isNumberKey(event)" Width="128px"></asp:TextBox>
+                    <asp:TextBox ID="Stock" runat="server" CssClass="form-control" MaxLength="99" onkeypress="return isNumberKey(event)" Width="128px"></asp:TextBox>
                 </td>
             </tr>
 
             <tr>
                 <td class="auto-style46">
-                    <asp:Button ID="btnsave" runat="server" Text="Order" Font-Bold="True" OnClick="btnsave_Click" Width="55px" />
+                    <asp:Button ID="btnsave" class="btn btn-primary" runat="server" Text="Order" Font-Bold="True" OnClick="btnsave_Click" Width="55px" />
                 </td>
 
                 <td class="auto-style50">
-                    <asp:Button ID="btnclear" runat="server" Text="Clear" Font-Bold="True" OnClick="btnclear_Click" />
+                    <asp:Button ID="btnclear" class="btn btn-primary btn-sm" CssClass="form-control" runat="server" Text="Clear" Font-Bold="True" OnClick="btnclear_Click" />
                 </td>
+                <td class="auto-style50">
+
+                    <asp:Button ID="Button2" class="btn btn-primary btn-sm" CssClass="form-control" runat="server" Text="Check" Font-Bold="True" OnClick="searchForExistingItem" />
+                </td>
+
+
                 <td class="auto-style44">&nbsp;</td>
             </tr>
             <tr>
@@ -96,13 +108,14 @@
                 </td>
             </tr>
         </table>
+                <div style="margin-left: auto; margin-right: auto; width: 600px;">
         <h4>
             <br />
             <span class="auto-style52">Item List</span><br />
             <br />
         </h4>
         <div class="auto-style51">
-            <asp:GridView ID="productGrid" runat="server" AutoGenerateColumns="false" HorizontalAlign="Center" AllowSorting="true" OnSorting="productGrid_Sorting">
+            <asp:GridView ID="productGrid" runat="server" CssClass="table table-bordered table-striped"  AutoGenerateColumns="false" HorizontalAlign="Center" AllowSorting="true" OnSorting="productGrid_Sorting">
                 <Columns>
                     <asp:BoundField DataField="ProductId" HeaderText="Item Id" SortExpression="ProductId" />
                     <asp:BoundField DataField="ProductName" HeaderText="Item Name" SortExpression="ProductName" />
@@ -114,6 +127,7 @@
                 </Columns>
             </asp:GridView>
             <br />
+        </div>
         </div>
     </div>
 </asp:Content>

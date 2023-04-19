@@ -79,10 +79,14 @@ public partial class Shipment : System.Web.UI.Page
                     var inventoryCheck = dbContext.Products.Where(x => x.ProductId == item.OrderProductId).FirstOrDefault();
                     if (inventoryCheck.ProductCount >= item.OrderProductAmount)
                     {
-                        var order = dbContext.Orders.Where(x => x.OrderId == orderId).FirstOrDefault();
-                        order.CarrierName = carrier.CarrierName;
-                        order.CarrierId = carrier.CarrierId;
-                        dbContext.Orders.AddOrUpdate(order);
+                        var order = dbContext.Orders.Where(x => x.OrderId == orderId).ToList();
+                        foreach(var cursor in order)
+                        {
+                            cursor.CarrierName = carrier.CarrierName;
+                            cursor.CarrierId = carrier.CarrierId;
+                            dbContext.Orders.AddOrUpdate(cursor);
+                            dbContext.SaveChanges();
+                        }
                         inventoryCheck.ProductCount = inventoryCheck.ProductCount - (int)item.OrderProductAmount;
                         dbContext.Products.AddOrUpdate(inventoryCheck);
                         dbContext.SaveChanges();

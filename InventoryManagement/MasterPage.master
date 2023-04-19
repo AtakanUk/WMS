@@ -6,6 +6,8 @@
 <head runat="server">
     <title></title>
     <asp:ContentPlaceHolder ID="head" runat="server">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     </asp:ContentPlaceHolder>
     <style type="text/css">
         .auto-style1 {
@@ -13,6 +15,7 @@
             height: 100%;
             margin-left: 0px;
         }
+
 
         .auto-style2 {
             height: 113px;
@@ -38,6 +41,7 @@
 
         .auto-style31 {
             height: 321px;
+            text-align: center;
         }
 
         .auto-style33 {
@@ -61,7 +65,7 @@
 
         .auto-style39 {
             height: 113px;
-            width: 5px;
+            width: 3px;
         }
 
         .auto-style41 {
@@ -96,13 +100,13 @@
 
                         &nbsp;
                    
-                    <asp:Button ID="btnLogOut" runat="server" href="Login.aspx" Font-Bold="True" ForeColor="#990000" Text="Logout" OnClick="btnLogOut_Click" />
+                    <asp:Button ID="btnLogOut" runat="server" href="Login.aspx" class="btn btn-danger" Font-Bold="True"  Text="Logout" OnClick="btnLogOut_Click" />
 
                     </td>
                     <td class="auto-style2">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td class="auto-style31" colspan="9" style="background-color: #FFFFFF">
+                    <td class="auto-style31" colspan="12" style="background-color: #FFFFFF">
                         <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
                         </asp:ContentPlaceHolder>
                     </td>

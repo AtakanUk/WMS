@@ -29,6 +29,7 @@ public partial class OrderDetail : System.Web.UI.Page
             {
                 Response.Redirect("~/Login.aspx");
             }
+            searchForOrder(sender, e);
         }
 
     }
@@ -49,7 +50,7 @@ public partial class OrderDetail : System.Web.UI.Page
         using (var dbContext = new WarehouseDBEntities1())
         {
             List<OrderProductType> orderList = new List<OrderProductType>();
-            var items = dbContext.Orders.Where(x=>x.OrderId == orderId).ToList();
+            var items = dbContext.Orders.Where(x => x.OrderId == orderId).ToList();
             foreach (var item in items)
             {
                 OrderProductType orderToAdd = new OrderProductType();
@@ -68,22 +69,27 @@ public partial class OrderDetail : System.Web.UI.Page
             productGrid.DataSource = orderList;
             productGrid.DataBind();
         }
-        
+
     }
 
     protected void productGrid_Sorting(object sender, GridViewSortEventArgs e)
     {
-        var dataSource = productGrid.DataSource as List<Products>;
-        IEnumerable<Products> data = dataSource;
-        DataTable table = new DataTable();
-        using (var reader = ObjectReader.Create(data))
+        var check = int.TryParse(txtorderid.Text, out int orderId);
+        if (check)
         {
-            table.Load(reader);
-        }
+            FillGridView(orderId);
+            var dataSource = productGrid.DataSource as List<OrderProductType>;
+            IEnumerable<OrderProductType> data = dataSource;
+            DataTable table = new DataTable();
+            using (var reader = ObjectReader.Create(data))
+            {
+                table.Load(reader);
+            }
 
-        table.DefaultView.Sort = e.SortExpression + " " + GetSortDirection(e.SortExpression);
-        productGrid.DataSource = table;
-        productGrid.DataBind();
+            table.DefaultView.Sort = e.SortExpression + " " + GetSortDirection(e.SortExpression);
+            productGrid.DataSource = table;
+            productGrid.DataBind();
+        }
     }
 
     private string GetSortDirection(string column)

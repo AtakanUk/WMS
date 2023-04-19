@@ -3,6 +3,9 @@
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
     <script type="text/javascript">
         function isNumberKey(evt) {
             var charCode = (evt.which) ? evt.which : event.keyCode;
@@ -12,6 +15,7 @@
             return true;
         }
     </script>
+
     <style type="text/css">
         .auto-style41 {
             text-align: center;
@@ -52,58 +56,70 @@
         .auto-style52 {
             color: #003399;
         }
+
+        .table-borderless {
+            border-collapse: separate;
+            border-spacing: 5px 5px;
+        }
+
+        .table {
+            border-collapse: collapse;
+            width: 100%;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <div class="auto-style41">
         <h3 class="auto-style52">Item Registration</h3>
         <asp:HiddenField ID="hfProductId" runat="server" />
-        <table class="auto-style42">
+        <table class="auto-style42 table-borderless">
             <tr>
                 <td class="auto-style43" colspan="2">Item ID:</td>
                 <td class="auto-style44" colspan="2">
-                    <asp:TextBox ID="txtproid" runat="server" MaxLength="99" onkeypress="return isNumberKey(event)" Width="128px"></asp:TextBox>
-                    <asp:Button ID="Button2" runat="server" Text="Check" Font-Bold="True" OnClick="searchForExistingItem" />
+                    <asp:TextBox ID="txtproid" CssClass="form-control" runat="server" MaxLength="99" onkeypress="return isNumberKey(event)" Width="128px"></asp:TextBox>
                 </td>
             </tr>
             <tr>
                 <td class="auto-style43" colspan="2">Item Name:</td>
                 <td class="auto-style44" colspan="2">
-                    <asp:TextBox ID="txtproname" runat="server" Width="128px"></asp:TextBox>
+                    <asp:TextBox ID="txtproname" CssClass="form-control" runat="server" Width="128px"></asp:TextBox>
                 </td>
             </tr>
             <tr>
                 <td class="auto-style43" colspan="2">Item Description:</td>
                 <td class="auto-style44" colspan="2">
-                    <asp:TextBox ID="txtprodes" runat="server" TextMode="MultiLine" MaxLength="99" Width="128px"></asp:TextBox>
+                    <asp:TextBox ID="txtprodes" CssClass="form-control" runat="server" TextMode="MultiLine" MaxLength="99" Width="128px"></asp:TextBox>
                 </td>
             </tr>
             <tr>
                 <td class="auto-style43" colspan="2">Item Weight:</td>
                 <td class="auto-style44" colspan="2">
-                    <asp:TextBox ID="txtproweight" runat="server" MaxLength="99" Width="128px"></asp:TextBox>
+                    <asp:TextBox ID="txtproweight" CssClass="form-control" runat="server" MaxLength="99" Width="128px"></asp:TextBox>
                 </td>
             </tr>
             <tr>
                 <td class="auto-style43" colspan="2">Item Size:</td>
                 <td class="auto-style44" colspan="2">
-                    <asp:TextBox ID="txtprosize" runat="server" MaxLength="99" Width="128px"></asp:TextBox>
+                    <asp:TextBox ID="txtprosize" CssClass="form-control" runat="server" MaxLength="99" Width="128px"></asp:TextBox>
                 </td>
             </tr>
             <tr>
                 <td class="auto-style43" colspan="2">Item Origin:</td>
                 <td class="auto-style44" colspan="2">
-                    <asp:TextBox ID="txtproorigin" runat="server" TextMode="MultiLine" MaxLength="99" Width="128px"></asp:TextBox>
+                    <asp:TextBox ID="txtproorigin" CssClass="form-control" runat="server" TextMode="MultiLine" MaxLength="99" Width="128px"></asp:TextBox>
                 </td>
             </tr>
 
             <tr>
                 <td class="auto-style46">
-                    <asp:Button ID="btnsave" runat="server" Text="Save" Font-Bold="True" OnClick="btnsave_Click" Width="55px" />
+                    <asp:Button ID="btnsave" runat="server" class="btn btn-primary" Text="Save" Font-Bold="True" OnClick="btnsave_Click" Width="55px" />
                 </td>
-
                 <td class="auto-style50">
-                    <asp:Button ID="btnclear" runat="server" Text="Clear" Font-Bold="True" OnClick="btnclear_Click" />
+                    <asp:Button ID="btnclear" class="btn btn-primary btn-sm" CssClass="form-control" runat="server" Text="Clear" Font-Bold="True" OnClick="btnclear_Click" />
+
+                </td>
+                <td class="auto-style50">
+                    <asp:Button ID="Button2" class="btn btn-primary btn-sm" CssClass="form-control" runat="server" Text="Check" Font-Bold="True" OnClick="searchForExistingItem" />
                 </td>
                 <td class="auto-style44">&nbsp;</td>
             </tr>
@@ -114,13 +130,14 @@
                 </td>
             </tr>
         </table>
-        <h4>
-            <br />
-            <span class="auto-style52">Item List</span><br />
-            <br />
-        </h4>
-        <div class="auto-style51">
-            <asp:GridView ID="productGrid" runat="server" AutoGenerateColumns="false" HorizontalAlign="Center" AllowSorting="true" OnSorting="productGrid_Sorting" OnRowCommand="productGrid_RowCommand">
+        <div style="margin-left: auto; margin-right: auto; width: 600px;">
+            <h4>
+                <br />
+                <span class="auto-style52">Item List</span><br />
+                <br />
+            </h4>
+
+            <asp:GridView ID="productGrid" runat="server" AutoGenerateColumns="false" CssClass="table table-bordered table-striped" HorizontalAlign="Center" AllowSorting="true" OnSorting="productGrid_Sorting" OnRowCommand="productGrid_RowCommand">
                 <Columns>
                     <asp:BoundField DataField="ProductId" HeaderText="Item Id" SortExpression="ProductId" />
                     <asp:BoundField DataField="ProductName" HeaderText="Item Name" SortExpression="ProductName" />
@@ -131,10 +148,11 @@
                     <asp:BoundField DataField="ProductOrigin" HeaderText="Item Origin" SortExpression="ProductOrigin" />
                     <asp:TemplateField>
                         <ItemTemplate>
-                            <asp:Button ID="btnDelete" runat="server" Text="Delete" CommandName="DeleteProduct" CommandArgument='<%# Eval("ProductId") %>' />
+                            <asp:Button ID="btnDelete" runat="server" CssClass="btn btn-danger" Text="Delete" CommandName="DeleteProduct" CommandArgument='<%# Eval("ProductId") %>' />
                         </ItemTemplate>
                     </asp:TemplateField>
                 </Columns>
+                <HeaderStyle CssClass="table-header" />
             </asp:GridView>
             <br />
         </div>

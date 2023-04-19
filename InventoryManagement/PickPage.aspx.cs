@@ -28,8 +28,9 @@ public partial class PickPage : System.Web.UI.Page
             {
                 Response.Redirect("~/Login.aspx");
             }
+            FillGridView();
         }
-        FillGridView();
+        
     }
 
     void FillGridView()
@@ -53,8 +54,7 @@ public partial class PickPage : System.Web.UI.Page
         {
             if (e.CommandName == "GetOrderID")
             {
-                int rowIndex = Convert.ToInt32(e.CommandArgument);
-                int orderId = Convert.ToInt32(orderGrid.DataKeys[rowIndex].Value);
+                int orderId = Convert.ToInt32(e.CommandArgument);
 
                 var checkList = dbContext.Orders.Where(x => x.OrderId == orderId).ToList();
                 foreach (var item in checkList)
@@ -78,10 +78,21 @@ public partial class PickPage : System.Web.UI.Page
             }
             else if (e.CommandName == "CheckOrder")
             {
-                int index = Convert.ToInt32(e.CommandArgument);
-                GridViewRow row = orderGrid.Rows[index];
-                int orderId = Convert.ToInt32(orderGrid.DataKeys[row.RowIndex].Value);
+                FillGridView();
+                int orderId = Convert.ToInt32(e.CommandArgument);
                 getOrder(orderId);
+            }
+            else if(e.CommandName == "DeleteProduct")
+            {
+                FillGridView();
+                int orderId = Convert.ToInt32(e.CommandArgument);
+                var itemForDelete = dbContext.Orders.Where(x => x.OrderId == orderId).ToList();
+                foreach (var item in itemForDelete)
+                {
+                    dbContext.Orders.Remove(item);
+                    dbContext.SaveChanges();
+                    FillGridView();
+                }
             }
         }
     }
@@ -145,5 +156,14 @@ public partial class PickPage : System.Web.UI.Page
         ViewState["SortDirection"] = direction;
 
         return direction;
+    }
+
+    protected void productGrid_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        using (var dbcontext = new WarehouseDBEntities1())
+        {
+           
+        }
+
     }
 }

@@ -3,6 +3,8 @@
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script type="text/javascript">
         function isNumberKey(evt) {
             var charCode = (evt.which) ? evt.which : event.keyCode;
@@ -52,14 +54,26 @@
         .auto-style52 {
             color: #003399;
         }
+
+        .table-borderless {
+            border-collapse: separate;
+            border-spacing: 5px 5px;
+        }
+
+        .table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <div class="auto-style41">
+    <div style="margin-left: auto; margin-right: auto; width: 600px;">
         <h3 class="auto-style52">Item List</h3>
         <asp:HiddenField ID="hfProductId" runat="server" />
         <div class="auto-style51">
-            <asp:GridView ID="productGrid" runat="server" AutoGenerateColumns="false" HorizontalAlign="Center" AllowSorting="true" OnSorting="productGrid_Sorting">
+            <asp:GridView ID="productGrid" CssClass="table table-bordered table-striped" runat="server" AutoGenerateColumns="false" HorizontalAlign="Center" AllowSorting="true" OnSorting="productGrid_Sorting">
                 <Columns>
                     <asp:BoundField DataField="ProductId" HeaderText="Item Id" SortExpression="ProductId" />
                     <asp:BoundField DataField="ProductName" HeaderText="Item Name" SortExpression="ProductName" />
