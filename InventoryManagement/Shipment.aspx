@@ -61,7 +61,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <div style="margin-left: auto; margin-right: auto; width: 600px;">
         <div class="auto-style41">
-            <h3 class="auto-style52">Orders That Are Ready To Ship</h3>
+            <h3 class="auto-style52">Orders That Are Ready To Send</h3>
             <div class="auto-style51">
                 <asp:GridView ID="orderGrid" runat="server" AutoGenerateColumns="False" OnRowDataBound="orderGrid_RowDataBound" OnRowCommand="orderGrid_RowCommand" DataKeyNames="OrderId" CssClass="table table-bordered table-striped">
                     <Columns>
@@ -71,12 +71,12 @@
                                 <%# Eval("OrderStatus").ToString().Equals("False") ? "Not Completed" : "Completed" %>
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Items">
+                        <asp:TemplateField HeaderText="Carriers">
                             <ItemTemplate>
                                 <asp:DropDownList ID="ddlItems" CssClass="form-control" runat="server" DataTextField="CarrierName" DataValueField="CarrierName" />
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:ButtonField ButtonType="Button" Text="Ship" CommandName="GetOrderID">
+                        <asp:ButtonField ButtonType="Button" Text="Send" CommandName="GetOrderID">
                             <ControlStyle CssClass="btn btn-primary" />
                         </asp:ButtonField>
                     </Columns>

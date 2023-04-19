@@ -72,7 +72,7 @@
         <tr>
             <td class="auto-style43" colspan="2">Order ID:</td>
             <td class="auto-style44" colspan="2">
-                <asp:DropDownList ID="ddlorderid" CssClass="form-control" runat="server" Width="128px"></asp:DropDownList>
+                <asp:DropDownList ID="ddlorderid" CssClass="form-control" runat="server" Width="180px"></asp:DropDownList>
 
 
             </td>
