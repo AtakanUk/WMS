@@ -72,7 +72,8 @@
         <tr>
             <td class="auto-style43" colspan="2">Order ID:</td>
             <td class="auto-style44" colspan="2">
-                <asp:TextBox ID="txtorderid" CssClass="form-control" runat="server" MaxLength="99" onkeypress="return isNumberKey(event)" Width="128px"></asp:TextBox>
+                <asp:DropDownList ID="ddlorderid" CssClass="form-control" runat="server" Width="128px"></asp:DropDownList>
+
 
             </td>
             <td class="auto-style44" colspan="2">
@@ -96,7 +97,17 @@
                         <asp:BoundField DataField="ProductName" HeaderText="Product Name" SortExpression="ProductName" />
                         <asp:BoundField DataField="ProductId" HeaderText="Product Id" SortExpression="ProductId" />
                         <asp:BoundField DataField="OrderProductAmount" HeaderText="Order Product Amount" SortExpression="OrderProductAmount" />
-                        <asp:BoundField DataField="OrderStatus" HeaderText="Order Status" SortExpression="OrderStatus" />
+                        <asp:BoundField DataField="CarrierId" HeaderText="Carrier Id" SortExpression="CarrierId" />
+                        <asp:BoundField DataField="CarrierName" HeaderText="Carrier Name" SortExpression="CarrierName" />
+                        <asp:BoundField DataField="CustomerId" HeaderText="Customer Id" SortExpression="CustomerId" />
+                        <asp:BoundField DataField="CustomerName" HeaderText="Customer Name" SortExpression="CustomerName" />
+                        <asp:TemplateField HeaderText="Order Status" SortExpression="OrderStatus">
+                            <ItemTemplate>
+                                <%# Convert.ToBoolean(Eval("OrderStatus")) ? "Ready To Send" : "Not Ready" %>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        
+                        <asp:BoundField DataField="IsShipped" HeaderText="Send Status" SortExpression="IsShipped" />
                     </Columns>
                 </asp:GridView>
                 <br />
